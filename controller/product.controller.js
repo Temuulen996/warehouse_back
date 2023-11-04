@@ -2,6 +2,7 @@ const asyncHandler = require("../middleware/asyncHandler");
 const Product = require("../models/product");
 const User = require("../models/user");
 const CustomError = require("../utils/errorObject");
+const mongoose = require("mongoose");
 exports.findAll = asyncHandler(async (req, res, next) => {
   const data = await Product.find();
   // if (!data) {
@@ -11,8 +12,10 @@ exports.findAll = asyncHandler(async (req, res, next) => {
   res.status(200).send({ success: true, data: data });
 });
 exports.findById = asyncHandler(async (req, res, next) => {
-  const id = req.params.id;
+  let id = req.params.id;
+  id = mongoose.Types.ObjectId(id);
   const data = await Product.findById(id);
+  console.log(id);
   if (!data) {
     throw new CustomError(`iim id tai buteegdehuun baihgui baina.`, 400);
   }

@@ -12,7 +12,10 @@ exports.findAll = asyncHandler(async (req, res, next) => {
 });
 exports.findById = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
+  console.log(id);
+
   const data = await WareHouse.findById(id);
+  console.log(data);
   res.status(200).send({ success: true, data: data });
 });
 exports.addProductByID = asyncHandler(async (req, res, next) => {
