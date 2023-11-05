@@ -23,6 +23,7 @@ exports.findById = asyncHandler(async (req, res, next) => {
 });
 exports.createProduct = asyncHandler(async (req, res, next) => {
   const newData = req.body;
+  console.log(req.body);
   await Product.create(newData);
   res.status(200).send({ success: true });
 });

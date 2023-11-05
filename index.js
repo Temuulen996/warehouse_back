@@ -44,7 +44,7 @@ app.get("/", async (req, res, next) => {
 //errorHandler
 app.use(errorHandler);
 //errorHandler
-const server = app.listen(3001, () => {
+const server = app.listen(process.env.PORT, () => {
   console.log(`server ${process.env.PORT} port дээр аслаа`);
 });
 process.on("unhandledRejection", (err, promise) => {
