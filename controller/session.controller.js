@@ -1,5 +1,6 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const Session = require("../models/session");
+const User = require("../models/user");
 var rand = function () {
   return Math.random().toString(36).substr(2); // remove `0.`
 };
@@ -23,8 +24,21 @@ exports.findByUserID = asyncHandler(async (req, res, next) => {
 });
 
 exports.create = asyncHandler(async (req, res, next) => {
-  const userID = req.body.userID;
-  const token = Token();
-  const data = Session.create({ token: token, user_id: userID });
-  res.status(200).send({ success: true });
+  const state = false;
+  const user = req.body;
+  const check = await User.find({
+    email: user.email,
+    password: user.password,
+  });
+  console.log(check);
+  // const userID = req.body.userID;
+  if (check.length === 0) {
+    res.status(200).send({ success: false });
+  } else {
+    console.log(check[0]);
+    const token = Token();
+    const data = await Session.create({ token: token, user_id: check[0] });
+    console.log(data);
+    res.status(200).send({ success: true, data: data });
+  }
 });

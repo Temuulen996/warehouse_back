@@ -85,12 +85,16 @@ exports.deliverProduct = asyncHandler(async (req, res, next) => {
     }
     await WareHouse.findOneAndUpdate({ _id: from }, { products: productsFrom });
     await WareHouse.findOneAndUpdate({ _id: to }, { products: productsTo });
+    res.status(200).send({
+      success: true,
+      state: 1,
+      isAvailable: isAvailable,
+    });
+  } else {
+    res.status(200).send({
+      success: true,
+      state: 0,
+      isAvailable: isAvailable,
+    });
   }
-
-  res.status(200).send({
-    success: true,
-    state: "The product which u want to deliver is not existed.",
-    isAvailable: isAvailable,
-    isInclude: isInclude,
-  });
 });
