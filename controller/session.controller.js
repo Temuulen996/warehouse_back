@@ -22,7 +22,22 @@ exports.findByUserID = asyncHandler(async (req, res, next) => {
   const data = await Session.find({ user_id: userID });
   res.status(200).send({ success: true, data: data });
 });
-
+exports.deleteSession = asyncHandler(async (req, res, next) => {
+  const token = req.params.token;
+  console.log(token);
+  await Session.deleteOne({ token: token });
+  res.status(200).send({ success: true });
+});
+exports.check = asyncHandler(async (req, res, next) => {
+  const token = req.params.token;
+  console.log(token);
+  const data = await Session.find({ token: token });
+  if (data.length === 0) {
+    res.status(200).send({ success: true, isLoggedIn: false });
+  } else {
+    res.status(200).send({ success: true, isLoggedIn: true });
+  }
+});
 exports.create = asyncHandler(async (req, res, next) => {
   const state = false;
   const user = req.body;

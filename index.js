@@ -15,7 +15,7 @@ var bodyParser = require("body-parser");
 app.use(express.json({ limit: "500mb" }));
 app.use(bodyParser.json({ limit: "500mb" }));
 app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }));
-//Parse
+//Parser
 
 //db connect
 connectDb();
