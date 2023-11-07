@@ -39,8 +39,10 @@ app.use("/api/vehicle", VehicleRoute);
 //middleware
 
 app.get("/", async (req, res, next) => {
+  console.log(req.body);
   res.status(200).send({ response: "server-тэй амжилттай холбогдлоо." });
 });
+
 //errorHandler
 app.use(errorHandler);
 //errorHandler
