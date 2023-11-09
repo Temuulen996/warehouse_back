@@ -24,13 +24,13 @@ exports.findByUserID = asyncHandler(async (req, res, next) => {
 });
 exports.deleteSession = asyncHandler(async (req, res, next) => {
   const token = req.params.token;
-  console.log(token);
+
   await Session.deleteOne({ token: token });
   res.status(200).send({ success: true });
 });
 exports.check = asyncHandler(async (req, res, next) => {
   const token = req.params.token;
-  console.log(token);
+
   const data = await Session.find({ token: token });
   if (data.length === 0) {
     res.status(200).send({ success: true, isLoggedIn: false });
@@ -45,15 +45,14 @@ exports.create = asyncHandler(async (req, res, next) => {
     email: user.email,
     password: user.password,
   });
-  console.log(check);
+
   // const userID = req.body.userID;
   if (check.length === 0) {
     res.status(200).send({ success: false });
   } else {
-    console.log(check[0]);
     const token = Token();
     const data = await Session.create({ token: token, user_id: check[0] });
-    console.log(data);
+
     res.status(200).send({ success: true, data: data });
   }
 });

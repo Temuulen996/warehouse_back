@@ -15,7 +15,7 @@ exports.findById = asyncHandler(async (req, res, next) => {
   let id = req.params.id;
   id = mongoose.Types.ObjectId(id);
   const data = await Product.findById(id);
-  console.log(id);
+
   if (!data) {
     throw new CustomError(`iim id tai buteegdehuun baihgui baina.`, 400);
   }
@@ -23,7 +23,7 @@ exports.findById = asyncHandler(async (req, res, next) => {
 });
 exports.createProduct = asyncHandler(async (req, res, next) => {
   const newData = req.body;
-  console.log(req.body);
+
   await Product.create(newData);
   res.status(200).send({ success: true });
 });

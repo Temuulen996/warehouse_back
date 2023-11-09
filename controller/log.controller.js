@@ -1,6 +1,10 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const Log = require("../models/log");
-
+exports.create = asyncHandler(async (req, res, next) => {
+  const newLog = req.body;
+  await Log.create(newLog);
+  res.status(200).send({ success: true });
+});
 exports.findAll = asyncHandler(async (req, res, next) => {
   const data = await Log.find();
   res.status(200).send({ success: true, data: data });

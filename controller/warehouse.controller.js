@@ -12,10 +12,9 @@ exports.findAll = asyncHandler(async (req, res, next) => {
 });
 exports.findById = asyncHandler(async (req, res, next) => {
   const id = req.params.id;
-  console.log(id);
 
   const data = await WareHouse.findById(id);
-  console.log(data);
+
   res.status(200).send({ success: true, data: data });
 });
 exports.addProductByID = asyncHandler(async (req, res, next) => {
@@ -42,7 +41,6 @@ exports.addProductByID = asyncHandler(async (req, res, next) => {
   res.status(200).send({ success: true, data: "sad" });
 });
 exports.deliverProduct = asyncHandler(async (req, res, next) => {
-  console.log(req.body);
   const from = req.body.from;
   const to = req.body.to;
   const product_id = req.body.product;
@@ -52,13 +50,13 @@ exports.deliverProduct = asyncHandler(async (req, res, next) => {
   const productsFrom = ProductFrom.products;
   const productsTo = ProductTo.products;
   let isAvailable = false;
-  let isInclude = false;
+
   productsFrom.map((el, i) => {
     if (el.product_id == product_id) {
       isAvailable = el.quantity >= quantity;
     }
   });
-  console.log(isAvailable);
+
   if (isAvailable) {
     const warehouseFrom = await WareHouse.findById(from);
     let productsFrom = warehouseFrom.products;
@@ -67,7 +65,7 @@ exports.deliverProduct = asyncHandler(async (req, res, next) => {
         el.quantity = parseInt(el.quantity) - parseInt(quantity);
       }
     });
-    console.log(productsFrom);
+
     let isProductExisted = false;
     const warehouseTo = await WareHouse.findById(to);
     let productsTo = warehouseTo.products;
