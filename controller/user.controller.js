@@ -1,6 +1,7 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const User = require("../models/user");
-const mongoose = require("mongoose");
+
+const CustomError = require("../utils/errorObject");
 exports.findAll = asyncHandler(async (req, res, next) => {
   const data = await User.find();
   res.status(200).send({ success: true, data: data });
@@ -12,6 +13,29 @@ exports.findById = asyncHandler(async (req, res, next) => {
 });
 exports.create = asyncHandler(async (req, res, next) => {
   const newUser = req.body;
-  await User.create(newUser);
-  res.status(200).send({ success: true });
+
+  const user = await User.create(newUser);
+  const token = user.getJWT();
+  res.status(200).send({ success: true, user: user, token });
+});
+exports.login = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+  console.log(email);
+  if (!email || !password) {
+    throw new CustomError(" email nuuts ug damjuuln uu..", 400);
+  }
+  //хэрэглэгчийг хайж олох хэсэг
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) {
+    throw new CustomError("email nuuts ugiin ali neg buruu baina..", 401);
+  }
+  const ok = await user.checkPassword(password);
+  if (!ok) {
+    throw new CustomError("email nuuts ugiin ali neg buruu baina..", 401);
+  }
+
+  const token = user.getJWT();
+  res
+    .status(200)
+    .send({ success: true, login: true, user: user, token: token });
 });

@@ -1,12 +1,15 @@
 const express = require("express");
-const { findAll, findById, create } = require("../controller/user.controller");
+const { protect } = require("../middleware/protect");
 const {
-  addToWishlist,
-  removeFromWishlist,
+  findAll,
+  findById,
+  create,
+  login,
 } = require("../controller/user.controller");
 
 const router = express.Router();
-router.route("/").get(findAll).post(create);
+router.route("/").get(protect, findAll).post(create);
 router.route("/:id").get(findById);
+router.route("/login").post(login);
 
 module.exports = router;
